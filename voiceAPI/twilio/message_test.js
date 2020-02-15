@@ -10,5 +10,3 @@ module.exports = {
             .then((message) => console.log(message.sid));
     }
 };
-
-
