@@ -1,11 +1,11 @@
 const twilio = require('client');
 
 module.exports = {
-    message: function () {
+    makeCall: function () {
         twilio.client.calls
             .create({
                 url: 'http://demo.twilio.com/docs/voice.xml',
-                to: '+14155551212',
+                to: '+15872579730',
                 from: twilio.number
             })
             .then(call => console.log(call.sid));

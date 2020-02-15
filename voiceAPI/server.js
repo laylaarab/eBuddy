@@ -12,6 +12,8 @@ app.get('/', function (req, res) {
 
 });
 
+require('./routes/api')(app);
+
 https.createServer({
     key: fs.readFileSync('cert.key'),
     cert: fs.readFileSync('cert.pem')
