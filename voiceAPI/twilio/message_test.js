@@ -1,8 +1,4 @@
-const twilio = require('twilio');
-let accountSid = 'AC1e4b7cc73e473fe07753c1e2f25fa2c8'; // Your Account SID from www.message_test.com/console
-let authToken = '4b4207831b73f97a4cd8afc77a982af6';   // Your Auth Token from www.message_test.com/console
-
-let client = new twilio(accountSid, authToken);
+const client = require('client');
 
 module.exports = {
     message: function () {
