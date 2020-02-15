@@ -1,8 +1,5 @@
-const {phoneNumbersInputHandler} = require("../public/helpers/AccountHelpers");
-const {accountInputHandler} = require("../public/helpers/AccountHelpers");
 module.exports = function (app) {
-
-    app.post('/api/testCall', function (req, res) {
+    app.get('/api/testCall', function (req, res) {
         req.getConnection(function (err, connection) {
             const twilio_call = require('../twilio/calls');
             twilio_call.makeCall();
