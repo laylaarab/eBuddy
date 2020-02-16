@@ -9,7 +9,6 @@ const twilio_call = require('../twilio/calls');
 
 module.exports = function (app) {
     app.get('/api/testCall1', function (req, res) {
-
         const sample_config = {
             to: {
                 name: 'Evan',
@@ -21,10 +20,9 @@ module.exports = function (app) {
             }
         };
 
-            twilio_call.makeCall(sample_config);
-
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify('success'));
+        twilio_call.makeCall(sample_config);
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify('success'));
     });
 
     app.post('/api/sms/callrequest', function (req, res) {
@@ -68,19 +66,19 @@ module.exports = function (app) {
                 twiml.message('It doesn\'t seem like you have a call waiting!');
             }
         } else if (body === 'no' || body === 'No') {
-            twiml.message('No worries. We\'ll connect them to someone else.');
             if (buddiesMap.has(req.body.From)) {
-                twiml.message('Connecting you now!');
+                twiml.message('No worries. We\'ll connect them to someone else.');
                 // delete buddies from maps
                 let callerNumber = buddiesMap.get(req.body.From);
-                buddies.deleteBuddyPair(req.body.from, callerNumber);
+                buddies.deleteBuddyPair(req.body.From, callerNumber);
+            } else {
+                twiml.message('It doesn\'t seem like you have a call waiting!');
             }
         } else if (body === 'fuck you' || body === 'Fuck you') {
             twiml.message('Wanna queue up for help?');
         } else {
             twiml.message('No match for input.');
         }
-
         res.writeHead(200, {'Content-Type': 'text/xml'});
         res.end(twiml.toString());
     });
@@ -91,7 +89,6 @@ module.exports = function (app) {
         const mod = request.params.mod;
         const conf_id = request.params.conf_id;
         let conf_options;
-
 
         // Use the Twilio Node.js SDK to build an XML response
         const twiml = new VoiceResponse();
@@ -129,7 +126,7 @@ module.exports = function (app) {
     });
 
     app.post('/api/xml/conference_transcript', (request, response) => {
-         console.log(request.body.AddOns);
+        console.log(request.body.AddOns);
 
         response.setHeader('Content-Type', 'application/json');
         response.send(JSON.stringify('success'));
