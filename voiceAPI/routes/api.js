@@ -81,7 +81,7 @@ module.exports = function (app) {
         } else if (body === '418') {
             twiml.message('I\'m a teapot (send nudes pls)');
         } else if (body === '1' || body === '0' || body === '1' || body === '2' || body === '3' || body === '4' || body === '5') {
-            if (buddies.previousBuddies.has(req.body.From)) {
+            if (buddies.previousBuddies.get(req.body.From) != null) {
                 twiml.message('Thanks for your contribution!');
                 let recipients = {
                     to: {
