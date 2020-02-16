@@ -50,14 +50,7 @@ module.exports = function (app) {
         res.writeHead(200, {'Content-Type': 'text/xml'});
         res.end(twiml.toString());
     });
-
-};
-
-
-    })
-
-
-
+    
 // Create a route that will handle Twilio webhook requests, sent as an
 // HTTP POST to /voice in our application
     app.post('/api/xml/conference/:mod/:conf_id', (request, response) => {
