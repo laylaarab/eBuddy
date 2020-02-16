@@ -1,5 +1,7 @@
 const sms = require('../twilio/sms');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
+
 const buddies = require('../twilio/buddies');
 const buddiesMap = buddies.buddiesMap;
 const namesMap = buddies.namesMap;
@@ -19,10 +21,10 @@ module.exports = function (app) {
             }
         };
 
-        twilio_call.makeCall(sample_config);
+            twilio_call.makeCall(sample_config);
 
-        res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify('success'));
+            res.setHeader('Content-Type', 'application/json');
+            res.send(JSON.stringify('success'));
     });
 
     app.post('/api/sms/callrequest', function (req, res) {
@@ -112,17 +114,25 @@ module.exports = function (app) {
         twiml.say("The other party will join shortly.");
         twiml.say({
             voice: 'man',
-        }, "PLEASE NOTE: This call will be rec  orded for profiling purposes.");
+        }, "PLEASE NOTE: This call will be recorded for profiling purposes.");
 
         // Start with a <Dial> verb
-        const dial = twiml.dial();
-
+        const dial = twiml.dial({
+            record: 'record-from-answer-dual'
+        });
 
         dial.conference(conf_id, conf_options);
 
         // Render the response as XML in reply to the webhook request
         response.type('text/xml');
         response.send(twiml.toString());
+    });
+
+    app.post('/api/xml/conference_transcript', (request, response) => {
+         console.log(request.body.AddOns);
+
+        response.setHeader('Content-Type', 'application/json');
+        response.send(JSON.stringify('success'));
     });
 
 

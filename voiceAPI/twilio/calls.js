@@ -1,5 +1,4 @@
 const twilio = require('./client');
-const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 module.exports = {
     makeCall: function (config) {
