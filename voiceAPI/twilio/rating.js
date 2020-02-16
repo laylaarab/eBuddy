@@ -9,8 +9,11 @@ module.exports = {
         })
 
 
-    }
+    },
 
+    getFeedback: function (config, rate) {
+
+    }
 
 };
 
