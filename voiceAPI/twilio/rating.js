@@ -36,8 +36,8 @@ module.exports = {
         // }
 
         const options_send = {
-            "client-phone": config.from.number,
-            "volunteer-phone": config.to.number,
+            "client-phone": config.to.number,
+            "volunteer-phone": config.from.number,
             "client-rating": rate
         }
 
