@@ -1,16 +1,18 @@
 const express = require('express');
-const {log, ExpressAPILogMiddleware} = require('@rama41222/node-logger');
-const twilio = require('./twilio/message_test');
 const fs = require('fs');
 const https = require('https');
+const bodyParser = require('body-parser');
 
 const app = express();
 
 app.get('/', function (req, res) {
-    twilio.message();
     res.send('hello world')
-
 });
+
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
 
 require('./routes/api')(app);
 
