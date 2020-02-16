@@ -6,6 +6,8 @@ const buddies = require('../twilio/buddies');
 const buddiesMap = buddies.buddiesMap;
 const namesMap = buddies.namesMap;
 const twilio_call = require('../twilio/calls');
+const twilio_transcript = require('../twilio/transcripts');
+const twilio_rating = require('../twilio/rating');
 
 module.exports = function (app) {
     app.get('/api/testCall1', function (req, res) {
@@ -128,8 +130,19 @@ module.exports = function (app) {
         response.send(twiml.toString());
     });
 
-    app.post('/api/xml/conference_transcript', (request, response) => {
-         console.log(request.body.AddOns);
+    app.put('/api/xml/conference_transcript', (request, response) => {
+        // console.log(request.body);
+        // let body_test = JSON.stringify(request.body);
+        // let re = /(?:"url":")(.*?)(?:")/;
+        // const found = request.body.toString().match(re);
+        // let test = JSON.stringify(request.body).AddOns;
+        // console.log(test);
+        // // console.log(JSON.parse(body_test).status);
+
+        const url = "https://api.twilio.com/2010-04-01/Accounts/AC1e4b7cc73e473fe07753c1e2f25fa2c8/Recordings/REbb928f5b7792e7eed2c33eaa8df043da/AddOnResults/XRaa6dce8d70147bc938c1eb5e1315a381/Payloads/XH7099450cdd0562f5fdbf9192e98a7d1f/Data";
+
+        // twilio_transcript.getTranscript(request.body.AddOns.results.voicebase_transcription.payload[0].url);
+        twilio_transcript.getTranscript(url);
 
         response.setHeader('Content-Type', 'application/json');
         response.send(JSON.stringify('success'));

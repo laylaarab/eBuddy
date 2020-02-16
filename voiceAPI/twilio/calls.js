@@ -1,4 +1,5 @@
 const twilio = require('./client');
+const twilio_rating = require('../twilio/rating');
 
 module.exports = {
     makeCall: function (config) {
@@ -24,7 +25,9 @@ module.exports = {
             url: 'https://krul.ca/api/xml/conference/m/'+conference_name,
             to: config.to.number,
             from: twilio.number
-        }));
+        })).then(twilio_rating.makeCall(config));
+
+
     }
 
 
