@@ -93,7 +93,8 @@ module.exports = function (app) {
                         number: buddies.previousBuddies.get(req.body.From)
                     }
                 };
-                twilio_rating.getFeedback(recipients, body)
+                twilio_rating.getFeedback(recipients, body);
+                buddies.previousBuddies.delete(req.body.From)
                 // make API call to Shamez
             } else {
                 twiml.message('It doesn\'t seem like you have a call waiting!');
