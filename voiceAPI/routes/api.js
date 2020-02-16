@@ -80,8 +80,8 @@ module.exports = function (app) {
             twiml.message('Wanna queue up for help?');
         } else if (body === '418') {
             twiml.message('I\'m a teapot (send nudes pls)');
-        } else if (body === '1' || body === '0' || body === '1' || body === '2' || body === '3' || body === '4' || body === '5') {
-            if (buddies.previousBuddies.get(req.body.From) != null) {
+        } else if (body === '1' || body === '2' || body === '3' || body === '4' || body === '5') {
+            if (buddies.previousBuddies.has(req.body.From)) {
                 twiml.message('Thanks for your contribution!');
                 let recipients = {
                     to: {

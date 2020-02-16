@@ -17,7 +17,7 @@ module.exports = {
         this.buddiesMap.set(volunteer.number, caller.number);
         this.namesMap.set(volunteer.number, volunteer.name);
         this.namesMap.set(caller.number, caller.name);
-        this.previousBuddies.set(volunteer.number, caller.number);
+        this.previousBuddies.set(caller.number, volunteer.number);
     },
 
     deleteBuddyPair: function (volunteer, caller) {
