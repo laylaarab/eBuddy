@@ -76,6 +76,8 @@ module.exports = function (app) {
             }
         } else if (body === 'fuck you' || body === 'Fuck you') {
             twiml.message('Wanna queue up for help?');
+        } else if (body === '418') {
+            twiml.message('I\'m a teapot (send nudes pls)');
         } else {
             twiml.message('No match for input.');
         }
