@@ -2,6 +2,7 @@
   <dictionary name="layla">
     <words>
       <w>twilio</w>
+      <w>twiml</w>
     </words>
   </dictionary>
 </component>
