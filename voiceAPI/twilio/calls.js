@@ -1,14 +1,35 @@
-const twilio = require('client');
+const twilio = require('./client');
+const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 module.exports = {
-    makeCall: function () {
-        twilio.client.calls
-            .create({
-                url: 'http://demo.twilio.com/docs/voice.xml',
-                to: '+15872579730',
+    makeCall: function (config) {
+
+        //
+        // const sample_config = {
+        //     to: {
+        //         name: 'Evan',
+        //         number: '+15872579730'
+        //     },
+        //     from: {
+        //         name: 'Layla',
+        //         number: '+15877167898'
+        //     }
+        // };
+        let conference_name = 'CON_' + config.to.name + config.to.number + '__' + config.from.name + config.from.number;
+
+        twilio.client.calls.create({
+                url: 'https://krul.ca/api/xml/conference/p/'+conference_name,
+                to: config.from.number,
                 from: twilio.number
-            })
-            .then(call => console.log(call.sid));
+            }).then(twilio.client.calls.create({
+            url: 'https://krul.ca/api/xml/conference/m/'+conference_name,
+            to: config.to.number,
+            from: twilio.number
+        }));
     }
+
+
 };
+
+
 
