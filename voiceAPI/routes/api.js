@@ -78,6 +78,9 @@ module.exports = function (app) {
             twiml.message('Wanna queue up for help?');
         } else if (body === '418') {
             twiml.message('I\'m a teapot (send nudes pls)');
+        } else if (body === '1' || body === '0' || body === '1' || body === '2' || body === '3' || body === '4' || body === '5') {
+            twiml.message('Thanks for your contribution!');
+            // make API call to Shamez
         } else {
             twiml.message('No match for input.');
         }
