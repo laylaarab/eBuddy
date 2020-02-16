@@ -12,7 +12,9 @@ module.exports = {
     },
 
     getFeedback: function (config, rate) {
-
+        console.log('Received rating from: ' + config.from.number);
+        console.log('Received rating to: ' + config.to.number);
+        console.log('Value: ' + rate);
     }
 
 };
