@@ -133,7 +133,7 @@ module.exports = function (app) {
         twiml.say("The other party will join shortly.");
         twiml.say({
             voice: 'man',
-        }, "PLEASE NOTE: This call will be recorded for profiling purposes.");
+        }, "PLEASE NOTE: This call will be recorded for monitoring purposes.");
 
         // Start with a <Dial> verb
         const dial = twiml.dial({
