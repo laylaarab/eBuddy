@@ -1,0 +1,97 @@
+<html>
+
+<head>
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+<style>
+.topright {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 18px;
+}
+body {
+    background: -webkit-linear-gradient( #ffe6f7, #b3e6ff); 
+    background: -o-linear-gradient( #ffe6f7, #b3e6ff); 
+    background: -moz-linear-gradient( #ffe6f7, #b3e6ff); 
+    background: linear-gradient( #ffe6f7, #b3e6ff); 
+    background-color:  #ffe6f7; 
+}
+.container {
+  width: 500px;
+  clear: both;
+}
+.container input {
+  width: 100%;
+  clear: both;
+}
+</style>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    var max_fields      = 10;
+    var wrapper         = $(".container1");
+    var add_button      = $(".add_form_field");
+ 
+    var x = 1;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(x < max_fields){
+            x++;
+            $(wrapper).append('<div><input type="text" class="form-control" required name="mytext[]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+        } else {
+			alert('No thats it you can only have 10')
+		}
+		});
+ 
+    $(wrapper).on("click",".delete", function(e){
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+});
+</script>
+</head>
+
+
+<body>
+
+<div class="container">
+<form action="add.php" method="post">
+   <br><h2><text>Buddy Volunteer Sign Up</text></h2><br>
+   Email: <input type="email" class="form-control" required name="Email"><br>
+   Password: <input type="password" class="form-control" required name="password"><br>
+   First Name: <input type="text" class="form-control" required name="FName"><br>
+   Last Name: <input type="text" class="form-control" required name="LName"><br>
+   <label for="provinces">Province:</label>
+
+<select id="provinces">
+  <option value="BC">BC</option>
+  <option value="AB">AB</option>
+  <option value="SK">SK</option>
+  <option value="MB">MB</option>
+  <option value="ON">ON</option>
+  <option value="QC">QC</option>
+  <option value="NL">NL</option>
+  <option value="NS">NS</option>
+  <option value="PE">PE</option>
+  <option value="NT">NT</option>
+  <option value="PE">NU</option>
+  <option value="YT">YT</option>
+  <option value="NB">NB</option>
+</select><br>
+
+   City: <input type="text" class="form-control" required name="City"><br>
+   Phone Number (xxxxxxxxxx):  <input type="text" class="form-control" pattern = "[0-9]{10}" required minlength = 10 maxlength = 10 name="PhoneNum"><br>
+   Interests:<div class="container1">
+<div><input type="text" class="form-control" required name="mytext[]"> <br> </div>
+</div>
+<button class="add_form_field btn btn-secondary" style = 'width: 150px;'> Add New <span style="font-size:16px; font-weight:bold;"></span></button>
+</body>
+   <br><br><button class = 'btn btn-primary' style = 'width: 150px;'type = 'submit'>Create New Account</button>
+</form>
+</div>
+
+</html>
