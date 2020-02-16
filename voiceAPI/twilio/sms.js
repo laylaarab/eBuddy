@@ -13,15 +13,12 @@ function sendTwilioMessage(to, body) {
     sendMessage(to, twilio.number, body);
 }
 
-function recieveMessage() {
-}
-
-function checkIfCallAgreed() {
+function markCallAgreed() {
 
 }
 
 module.exports = {
-    sendCallRequest: function (to) {
-        sendTwilioMessage(to.number, to.name + ' wants to talk! Type \'yes\' to accept, or \'no\' if you aren\'t free.')
+    sendCallRequest: function (to, fromBuddy) {
+        sendTwilioMessage(fromBuddy.number, fromBuddy.name + ' wants to talk! Type \'yes\' to accept, or \'no\' if you aren\'t free.')
     }
 };

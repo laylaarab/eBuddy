@@ -1,33 +1,41 @@
 const sms = require('../twilio/sms');
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
-
+const buddies = require('../twilio/buddies');
+const buddiesMap = buddies.buddiesMap;
+const namesMap = buddies.namesMap;
+const twilio_call = require('../twilio/calls');
 
 module.exports = function (app) {
     app.get('/api/testCall1', function (req, res) {
-            const twilio_call = require('../twilio/calls');
 
-            const sample_config = {
-                to: {
-                    name: 'Evan',
-                    number: '+15872579730'
-                },
-                from: {
-                    name: 'Layla',
-                    number: '+15877167898'
-                }
-            };
+        const sample_config = {
+            to: {
+                name: 'Evan',
+                number: '+15872579730'
+            },
+            from: {
+                name: 'Layla',
+                number: '+15877167898'
+            }
+        };
 
-            twilio_call.makeCall(sample_config);
+        twilio_call.makeCall(sample_config);
 
-            res.setHeader('Content-Type', 'application/json');
-            res.send(JSON.stringify('success'));
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify('success'));
     });
 
     app.post('/api/sms/callrequest', function (req, res) {
-        console.log(req.body.to.number);
+        let to = req.body.to;
+        let from = req.body.from;
+        buddies.addBuddyPair(to, from);
         sms.sendCallRequest({
-                name: req.body.to.name,
-                number: req.body.to.number
+                name: to.name,
+                number: to.number
+            },
+            {
+                name: from.name,
+                number: to.number
             }
         );
         res.setHeader('Content-Type', 'application/json');
@@ -35,13 +43,37 @@ module.exports = function (app) {
     });
 
     app.post('/api/sms/reply', function (req, res) {
+        let body = req.body.Body;
         const twiml = new MessagingResponse();
-
-        if (req.body.Body === 'yes' || req.body.Body === 'Yes') {
-            twiml.message('Connecting you now!');
-        } else if (req.body.Body === 'no' || req.body.Body === 'No') {
+        if (body === 'yes' || body === 'Yes') {
+            if (buddiesMap.has(req.body.From)) {
+                twiml.message('Connecting you now!');
+                let recipients = {
+                    to: {
+                        name: namesMap.get(req.body.From),
+                        number: req.body.From
+                    },
+                    from: {
+                        name: namesMap.get(buddiesMap.get(req.body.From)),
+                        number: buddiesMap.get(req.body.From)
+                    }
+                };
+                twilio_call.makeCall(recipients);
+                // delete buddies from maps
+                let callerNumber = buddiesMap.get(req.body.From);
+                buddies.deleteBuddyPair(req.body.From, callerNumber);
+            } else {
+                twiml.message('It doesn\'t seem like you have a call waiting!');
+            }
+        } else if (body === 'no' || body === 'No') {
             twiml.message('No worries. We\'ll connect them to someone else.');
-        } else if (req.body.Body === 'fuck you' || req.body.Body === 'Fuck you') {
+            if (buddiesMap.has(req.body.From)) {
+                twiml.message('Connecting you now!');
+                // delete buddies from maps
+                let callerNumber = buddiesMap.get(req.body.From);
+                buddies.deleteBuddyPair(req.body.from, callerNumber);
+            }
+        } else if (body === 'fuck you' || body === 'Fuck you') {
             twiml.message('Wanna queue up for help?');
         } else {
             twiml.message('No match for input.');
@@ -50,7 +82,7 @@ module.exports = function (app) {
         res.writeHead(200, {'Content-Type': 'text/xml'});
         res.end(twiml.toString());
     });
-    
+
 // Create a route that will handle Twilio webhook requests, sent as an
 // HTTP POST to /voice in our application
     app.post('/api/xml/conference/:mod/:conf_id', (request, response) => {
@@ -80,7 +112,7 @@ module.exports = function (app) {
         twiml.say("The other party will join shortly.");
         twiml.say({
             voice: 'man',
-        }, "PLEASE NOTE: This call will be recorded for profiling purposes.");
+        }, "PLEASE NOTE: This call will be rec  orded for profiling purposes.");
 
         // Start with a <Dial> verb
         const dial = twiml.dial();
@@ -92,7 +124,6 @@ module.exports = function (app) {
         response.type('text/xml');
         response.send(twiml.toString());
     });
-
 
 
 }; // end of module
