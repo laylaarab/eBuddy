@@ -81,8 +81,23 @@ module.exports = function (app) {
         } else if (body === '418') {
             twiml.message('I\'m a teapot (send nudes pls)');
         } else if (body === '1' || body === '0' || body === '1' || body === '2' || body === '3' || body === '4' || body === '5') {
-            twiml.message('Thanks for your contribution!');
-            // make API call to Shamez
+            if (buddies.previousBuddies.has(req.body.From)) {
+                twiml.message('Thanks for your contribution!');
+                let recipients = {
+                    to: {
+                        name: namesMap.get(req.body.From),
+                        number: req.body.From
+                    },
+                    from: {
+                        name: namesMap.get(buddies.previousBuddies.get(req.body.From)),
+                        number: buddies.previousBuddies.get(req.body.From)
+                    }
+                };
+                twilio_rating.getFeedback(recipients, body)
+                // make API call to Shamez
+            } else {
+                twiml.message('It doesn\'t seem like you have a call waiting!');
+            }
         } else {
             twiml.message('No match for input.');
         }
